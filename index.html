@@ -30,7 +30,7 @@
     }
 
     class Grid {
-        divisions = 20;
+        divisions = 5;
 
         draw(ctx) {
             ctx.fillStyle = "black";
@@ -66,7 +66,11 @@
         }
         direction = DIRECTIONS.RIGHT
 
-        // set
+        setNewPosition(position) {
+            if (position.x <= grid.divisions && position.y <= grid.divisions && position.x >= 1 && position.y >= 1) {
+                this.position = position;
+            }
+        }
     }
 
     const grid = new Grid();
@@ -135,16 +139,17 @@
 
     function setNewSnakePosition() {
         if (snake.direction === DIRECTIONS.RIGHT) {
-            snake.position.x += 1;
+            snake.setNewPosition({ x: snake.position.x + 1, y: snake.position.y })
         }
         if (snake.direction === DIRECTIONS.LEFT) {
-            snake.position.x -= 1;
+            snake.setNewPosition({ x: snake.position.x - 1, y: snake.position.y })
         }
         if (snake.direction === DIRECTIONS.UP) {
-            snake.position.y -= 1;
+            snake.setNewPosition({ x: snake.position.x, y: snake.position.y - 1 })
         }
         if (snake.direction === DIRECTIONS.DOWN) {
-            snake.position.y += 1;
+
+            snake.setNewPosition({ x: snake.position.x, y: snake.position.y + 1 })
         }
     }
 
