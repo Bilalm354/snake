@@ -1,0 +1,109 @@
+<html>
+
+<body>
+    <canvas width="500" height="500">
+        An alternative text describing what your canvas displays.
+    </canvas>
+</body>
+<style>
+    body {
+        background: darkslategrey;
+    }
+</style>
+<script>
+    class Snake {
+        position = {
+            x: 5,
+            y: 5
+        }
+        direction = 'right'
+    }
+
+    const snake = new Snake();
+
+    const canvas = document.querySelector("canvas");
+    const lengthOfBlockEdge = canvas.width / 10;
+
+
+    function main() {
+        document.addEventListener('keydown', (event) => console.log({ event }))
+        const ctx = canvas.getContext("2d");
+        draw(ctx);
+
+        setInterval(() => {
+            console.log({ snake })
+            updateGame()
+            draw(ctx);
+        }, 1000)
+    }
+
+    function mapKeyToDirection(key) {
+        // switch(key){
+        //     case key==='ArrowLeft'
+        // }
+        //'ArrowUp'
+        //  'ArrowRight'
+        // 'ArrowDown'
+    }
+
+
+    function draw(ctx) {
+        drawBackground(ctx);
+        draw10x10Grid(ctx);
+        drawSnake(ctx)
+    }
+
+    function drawBackground(ctx) {
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvas.width, canvas.width);
+    }
+
+    function drawSnake(ctx) {
+        drawBlockInXYPosition(ctx, snake.position.x, snake.position.y)
+    }
+
+    function drawBlockInXYPosition(ctx, x, y) {
+        ctx.fillStyle = "green";
+        ctx.fillRect((x * lengthOfBlockEdge) - lengthOfBlockEdge, (y * lengthOfBlockEdge - lengthOfBlockEdge), lengthOfBlockEdge, lengthOfBlockEdge);
+    }
+
+    function setNewSnakePosition() {
+        if (snake.direction === 'right') {
+            snake.position.x += 1;
+        }
+        if (snake.direction === 'left') {
+            snake.position.x -= 1;
+        }
+        if (snake.direction === 'up') {
+            snake.position.y += 1;
+        }
+        if (snake.direction === 'down') {
+            snake.position.y -= 1;
+        }
+    }
+
+    function updateGame() {
+        setNewSnakePosition()
+    }
+
+    function draw10x10Grid(ctx) { // useful for dev
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = "gray";
+        ctx.font = `15px serif`;
+        for (let xPosition = 1; xPosition <= 10; xPosition++) {
+            for (let yPosition = 1; yPosition <= 10; yPosition++) {
+                const startX = (xPosition - 1) * lengthOfBlockEdge;
+                const startY = (yPosition - 1) * lengthOfBlockEdge;
+                ctx.beginPath();
+                ctx.rect(startX, startY, lengthOfBlockEdge, lengthOfBlockEdge);
+                ctx.fillText(`${xPosition}, ${yPosition}`, startX + 10, startY + 20)
+                ctx.stroke();
+            }
+        }
+    }
+
+    main();
+
+</script>
+
+</html>
