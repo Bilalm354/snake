@@ -1,5 +1,5 @@
 import { Snake } from "./Snake";
-import { Direction } from "./constants";
+import { Direction } from "./enums";
 
 function isTheSamePosition(position1: { x: any; y: any; }, position2: { x: any; y: any; }) {
     return position1.x === position2.x && position1.y === position2.y
@@ -35,7 +35,7 @@ class FoodBlock {
         this.position = this.getNewPosition()
     }
 
-    getNewPosition = (snake = {}) => {
+    getNewPosition = () => {
         return generateRandomPosition(grid.divisions);
     }
 
@@ -44,7 +44,7 @@ class FoodBlock {
 
 const grid = new Grid();
 const foodBlock = new FoodBlock();
-const snake = new Snake();
+const snake = new Snake({x:3, y:3});
 const canvas: HTMLCanvasElement = document.querySelector("canvas") as HTMLCanvasElement;
 if(!canvas) {
     throw new Error('Canvas not found')
@@ -92,8 +92,8 @@ function mapKeyToDirection(key: any): Direction | undefined {
 function draw(ctx: CanvasRenderingContext2D) {
     drawBackground(ctx);
     grid.draw(ctx);
-    drawSnake(ctx);
     drawFoodBlock(ctx);
+    drawSnake(ctx);
 }
 
 function drawBackground(ctx: CanvasRenderingContext2D) {
@@ -114,28 +114,12 @@ function drawBlockInXYPosition(ctx: { fillStyle: any; fillRect: (arg0: number, a
     ctx.fillRect((x * lengthOfBlockEdge) - lengthOfBlockEdge, (y * lengthOfBlockEdge - lengthOfBlockEdge), lengthOfBlockEdge, lengthOfBlockEdge);
 }
 
-function setNewSnakePosition() {
-    if (snake.direction === Direction.RIGHT) {
-        snake.setNewPosition({ x: snake.positions[0].x + 1, y: snake.positions[0].y }, grid.divisions)
-    }
-    if (snake.direction === Direction.LEFT) {
-        snake.setNewPosition({ x: snake.positions[0].x - 1, y: snake.positions[0].y }, grid.divisions)
-    }
-    if (snake.direction === Direction.UP) {
-        snake.setNewPosition({ x: snake.positions[0].x, y: snake.positions[0].y - 1 }, grid.divisions)
-    }
-    if (snake.direction === Direction.DOWN) {
-
-        snake.setNewPosition({ x: snake.positions[0].x, y: snake.positions[0].y + 1 }, grid.divisions)
-    }
-}
-
 function updateGame() {
-    setNewSnakePosition()
-    if (isTheSamePosition(snake.positions[0], foodBlock.position)) {
-        foodBlock.position = foodBlock.getNewPosition(snake);
-        // and add tail to snake
-        snake.addTail();
+    
+    const areOnTheSamePosition = isTheSamePosition(snake.positions[0], foodBlock.position)
+    snake.update(areOnTheSamePosition)
+    if (areOnTheSamePosition) {
+        foodBlock.position = foodBlock.getNewPosition();
     }
 }
 
