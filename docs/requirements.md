@@ -6,8 +6,8 @@
 - [x] should change snakes direction with arrow keys 
 - [x] random food should spawn (1x1 blocks in a new colour)
 - [x] when snake position is same as food position then food position should respawn in new location
-- [ ] everytime snake eats a food block it should gain 1 in length and the tail should follow the snake head
 - [ ] snake should die if touches any of the edge of the grid 
+- [ ] everytime snake eats a food block it should gain 1 in length and the tail should follow the snake head
 - [ ] snake should die if it touches itself 
 - [ ] score of snake lenght should be shown during play
 - [ ] when snake dies should see a game over screen 
@@ -16,3 +16,4 @@
 - [ ] add second player controller by computer
 - [ ] food should spawn at the same time as it is eaten
 - [ ] food should not spawn on snake
+- [ ] don't start game until player presses a direction
