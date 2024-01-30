@@ -13,15 +13,11 @@ describe('Snake', () => {
         expect(snake.getLength()).toBe(originalLength + 1);
     })
 
-    it('should save its current position to history', () => {
-
-    })
-
     it('should die if its heads position is outside the bounds of the grid', () => {
         // Arrange
         // assuming grid is of size 5
         const snake = new Snake(new Position(5,5))
-        snake.direction === 'right';
+        snake.direction = Direction.RIGHT;
         // Act
         snake.update(false) 
 
@@ -35,10 +31,21 @@ describe('Snake', () => {
             const snake = new Snake(new Position(3, 3))
             snake.direction = Direction.RIGHT
             // Act
-            snake.updatePosition(5)
+            snake.updatePosition()
 
             // Assert
-            expect(snake.positions[0].x).toEqual(4)
+        })
+
+        it('it should not move if there is no direction set', () => {
+            // Arrange
+            const snake = new Snake(new Position(3,3))
+            snake.direction = undefined
+
+            // Act
+            snake.updatePosition();
+
+            // Assert
+            expect(snake.positions[0].x).toEqual(3)
             expect(snake.positions[0].y).toEqual(3)
         })
     })

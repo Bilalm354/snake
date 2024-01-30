@@ -1,3 +1,4 @@
+import grid from "./Grid";
 import { Position } from "./Position";
 import { drawBlockInXYPosition } from "./drawBlockInXYPosition";
 import { GameObject } from "./interfaces";
@@ -12,7 +13,7 @@ export class FoodBlock implements GameObject {
     }
 
     getNewPosition = () => {
-        return Position.generateRandomPosition(5);
+        return Position.generateRandomPosition(grid.divisions);
     };
 
     update = () => {

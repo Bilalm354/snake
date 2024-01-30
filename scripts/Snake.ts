@@ -2,6 +2,7 @@ import { Position } from "./Position";
 import { Direction } from "./enums";
 import { GameObject } from "./interfaces";
 import { drawBlockInXYPosition } from "./drawBlockInXYPosition";
+import grid from "./Grid";
 
 export default class Snake implements GameObject {
     history: any;
@@ -11,7 +12,7 @@ export default class Snake implements GameObject {
         this.positions = [startingPosition]
     }
 
-    direction = Direction.RIGHT
+    direction: Direction | undefined = undefined
 
     draw(ctx: any, lengthOfBlockEdge: number) {
         for (const position of this.positions) {
@@ -27,7 +28,9 @@ export default class Snake implements GameObject {
         }
     }
 
-    updatePosition(gridSize: number) {
+    updatePosition() {
+        const gridSize = grid.divisions;
+        
         switch(this.direction) {
             case Direction.RIGHT:
                 this.setPosition(new Position(this.positions[0].x + 1, this.positions[0].y), gridSize)
@@ -56,7 +59,7 @@ export default class Snake implements GameObject {
     }
 
     update(_isOnSamePositionAsFood: boolean) {
-        this.updatePosition(5)
+        this.updatePosition()
         // this.history.push({this.positions[0]})
     }
 }

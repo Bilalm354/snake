@@ -1,4 +1,4 @@
-export class Grid {
+class Grid {
     divisions = 5;
 
     draw(ctx: CanvasRenderingContext2D, lengthOfBlockEdge: number) {
@@ -15,3 +15,6 @@ export class Grid {
         }
     }
 }
+
+const grid = new Grid();
+export default grid;

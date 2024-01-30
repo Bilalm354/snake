@@ -582,17 +582,17 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _foodBlock = require("./FoodBlock");
 var _grid = require("./Grid");
+var _gridDefault = parcelHelpers.interopDefault(_grid);
 var _position = require("./Position");
 var _snake = require("./Snake");
 var _snakeDefault = parcelHelpers.interopDefault(_snake);
 var _enums = require("./enums");
 function main() {
-    const grid = new (0, _grid.Grid)();
     const foodBlock = new (0, _foodBlock.FoodBlock)();
     const snake = new (0, _snakeDefault.default)(new (0, _position.Position)(3, 3));
     const canvas = document.querySelector("canvas");
     if (!canvas) throw new Error("Canvas not found");
-    const lengthOfBlockEdge = canvas.width / grid.divisions;
+    const lengthOfBlockEdge = canvas.width / (0, _gridDefault.default).divisions;
     document.addEventListener("keydown", onKeyDown);
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -608,7 +608,7 @@ function main() {
     function drawEverything(ctx) {
         drawBackground(ctx);
         for (const x of [
-            grid,
+            (0, _gridDefault.default),
             foodBlock,
             snake
         ])x.draw(ctx, lengthOfBlockEdge);
@@ -645,12 +645,14 @@ main();
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "FoodBlock", ()=>FoodBlock);
+var _grid = require("./Grid");
+var _gridDefault = parcelHelpers.interopDefault(_grid);
 var _position = require("./Position");
 var _drawBlockInXYPosition = require("./drawBlockInXYPosition");
 class FoodBlock {
     constructor(){
         this.getNewPosition = ()=>{
-            return (0, _position.Position).generateRandomPosition(5);
+            return (0, _position.Position).generateRandomPosition((0, _gridDefault.default).divisions);
         };
         this.update = ()=>{
             this.position = this.getNewPosition();
@@ -663,7 +665,7 @@ class FoodBlock {
     }
 }
 
-},{"./Position":"ioupC","./drawBlockInXYPosition":"9Wu3g","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ioupC":[function(require,module,exports) {
+},{"./Position":"ioupC","./drawBlockInXYPosition":"9Wu3g","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./Grid":"3m6mn"}],"ioupC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Position", ()=>Position);
@@ -727,7 +729,6 @@ function drawBlockInXYPosition(ctx, x, y, colour, lengthOfBlockEdge) {
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3m6mn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Grid", ()=>Grid);
 class Grid {
     draw(ctx, lengthOfBlockEdge) {
         ctx.fillStyle = "black";
@@ -744,6 +745,8 @@ class Grid {
         this.divisions = 5;
     }
 }
+const grid = new Grid();
+exports.default = grid;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hIOoe":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -751,9 +754,11 @@ parcelHelpers.defineInteropFlag(exports);
 var _position = require("./Position");
 var _enums = require("./enums");
 var _drawBlockInXYPosition = require("./drawBlockInXYPosition");
+var _grid = require("./Grid");
+var _gridDefault = parcelHelpers.interopDefault(_grid);
 class Snake {
     constructor(startingPosition){
-        this.direction = (0, _enums.Direction).RIGHT;
+        this.direction = undefined;
         this.positions = [
             startingPosition
         ];
@@ -765,7 +770,8 @@ class Snake {
         if (position.x <= divisions && position.y <= divisions && position.x >= 1 && position.y >= 1) this.positions[0] = position;
         else this.isDead = true;
     }
-    updatePosition(gridSize) {
+    updatePosition() {
+        const gridSize = (0, _gridDefault.default).divisions;
         switch(this.direction){
             case (0, _enums.Direction).RIGHT:
                 this.setPosition(new (0, _position.Position)(this.positions[0].x + 1, this.positions[0].y), gridSize);
@@ -789,13 +795,13 @@ class Snake {
         return this.positions.length;
     }
     update(_isOnSamePositionAsFood) {
-        this.updatePosition(5);
+        this.updatePosition();
     // this.history.push({this.positions[0]})
     }
 }
 exports.default = Snake;
 
-},{"./Position":"ioupC","./enums":"1BBdE","./drawBlockInXYPosition":"9Wu3g","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1BBdE":[function(require,module,exports) {
+},{"./Position":"ioupC","./enums":"1BBdE","./drawBlockInXYPosition":"9Wu3g","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./Grid":"3m6mn"}],"1BBdE":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Direction", ()=>Direction);

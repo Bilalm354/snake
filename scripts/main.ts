@@ -1,11 +1,10 @@
 import { FoodBlock } from "./FoodBlock";
-import { Grid } from "./Grid";
+import grid from "./Grid";
 import { Position } from "./Position";
 import Snake from "./Snake";
 import { Direction } from "./enums";
 
 function main() {
-    const grid = new Grid();
     const foodBlock = new FoodBlock();
     const snake = new Snake(new Position(3, 3));
     const canvas: HTMLCanvasElement = document.querySelector("canvas") as HTMLCanvasElement;
@@ -44,7 +43,6 @@ function main() {
     }
     
     function updateGame() {
-
         const areOnTheSamePosition = Position.areTheSamePosition(snake.positions[0], foodBlock.position)
         snake.update(areOnTheSamePosition)
         if (areOnTheSamePosition) {
