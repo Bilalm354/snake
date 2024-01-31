@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "dev": "parcel index.html",
-    "test:jest": "jest .",
-    "test": "cypress run",
-    "test:open": "cypress open"
+    "dev": "npx parcel index.html",
+    "test:jest": "npx jest --verbose",
+    "test": "npx cypress run",
+    "test:open": "npx cypress open"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",

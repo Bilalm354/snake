@@ -28,17 +28,17 @@ function main() {
             updateGame()
         }
         drawEverything(ctx);
-    }, 1000)
+    }, 200)
 
     function drawEverything(ctx: CanvasRenderingContext2D) {
         drawBackground(ctx);
-        for (const x of [grid, foodBlock, snake]) {
+        for (const x of [foodBlock, snake]) { // add grid if want to see it
             x.draw(ctx, lengthOfBlockEdge);
         }
     }
     
     function drawBackground(ctx: CanvasRenderingContext2D) {
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "black";
         ctx.fillRect(0, 0, canvas.width, canvas.width);
     }
     

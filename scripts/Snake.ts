@@ -8,6 +8,7 @@ export default class Snake implements GameObject {
     history: any;
     positions: Position[]
     isDead: boolean | undefined
+    previousLastPosition: Position | undefined;
     constructor(startingPosition: Position) {
         this.positions = [startingPosition]
     }
@@ -20,34 +21,39 @@ export default class Snake implements GameObject {
         }
     }
 
-    setPosition(position: Position, divisions: number) {
-        if (position.x <= divisions && position.y <= divisions && position.x >= 1 && position.y >= 1) {
-            this.positions[0] = position;
+    updatePosition() {
+        const position = this.positions[0];
+        const { divisions } = grid;
+        let newPosition: Position | undefined = undefined;
+        switch(this.direction) {
+            case Direction.RIGHT:
+                newPosition = (new Position(position.x + 1, position.y))
+                break;
+            case Direction.LEFT:
+                newPosition = (new Position(position.x - 1, position.y))
+                break;
+            case Direction.UP:
+                newPosition = (new Position(position.x, position.y - 1))
+                break;
+            case Direction.DOWN: 
+                newPosition = (new Position(position.x, position.y + 1))
+                break;
+            default:
+                return;
+        }
+        const isOutOfBounds = newPosition.x <= divisions && newPosition.y <= divisions && newPosition.x >= 1 && newPosition.y >= 1;
+        const touchedItSelf = this.positions.includes(newPosition);
+        if (isOutOfBounds || touchedItSelf) {
+            this.positions.unshift(newPosition);
+            this.positions.pop();
         } else {
             this.isDead = true;
         }
     }
 
-    updatePosition() {
-        const gridSize = grid.divisions;
-        
-        switch(this.direction) {
-            case Direction.RIGHT:
-                this.setPosition(new Position(this.positions[0].x + 1, this.positions[0].y), gridSize)
-                break;
-            case Direction.LEFT:
-                this.setPosition(new Position(this.positions[0].x - 1, this.positions[0].y), gridSize)
-                break;
-            case Direction.UP:
-                this.setPosition(new Position(this.positions[0].x, this.positions[0].y-1), gridSize)
-                break;
-            case Direction.DOWN: 
-            this.setPosition(new Position(this.positions[0].x, this.positions[0].y+1), gridSize)
-                break;
-        }
-    }
-
     eatFood() {
+        if (!this.previousLastPosition) throw Error('no previousLastPosition')
+        this.positions.push(new Position(this.previousLastPosition!.x, this.previousLastPosition!.y))
     }
 
     getBehindBlock() {
@@ -59,8 +65,11 @@ export default class Snake implements GameObject {
     }
 
     update(_isOnSamePositionAsFood: boolean) {
+        this.previousLastPosition = this.positions[this.positions.length-1]
         this.updatePosition()
-        // this.history.push({this.positions[0]})
+        if(_isOnSamePositionAsFood) {
+            this.eatFood()
+        }
     }
 }
 

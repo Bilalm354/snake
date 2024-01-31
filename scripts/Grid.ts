@@ -1,5 +1,5 @@
 class Grid {
-    divisions = 5;
+    divisions = 20;
 
     draw(ctx: CanvasRenderingContext2D, lengthOfBlockEdge: number) {
         ctx.fillStyle = "black";
