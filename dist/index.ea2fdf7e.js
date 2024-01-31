@@ -604,17 +604,16 @@ function main() {
             return;
         } else updateGame();
         drawEverything(ctx);
-    }, 1000);
+    }, 200);
     function drawEverything(ctx) {
         drawBackground(ctx);
         for (const x of [
-            (0, _gridDefault.default),
             foodBlock,
             snake
         ])x.draw(ctx, lengthOfBlockEdge);
     }
     function drawBackground(ctx) {
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "black";
         ctx.fillRect(0, 0, canvas.width, canvas.width);
     }
     function updateGame() {
@@ -665,27 +664,27 @@ class FoodBlock {
     }
 }
 
-},{"./Position":"ioupC","./drawBlockInXYPosition":"9Wu3g","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./Grid":"3m6mn"}],"ioupC":[function(require,module,exports) {
+},{"./Grid":"3m6mn","./Position":"ioupC","./drawBlockInXYPosition":"9Wu3g","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3m6mn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Position", ()=>Position);
-class Position {
-    static areTheSamePosition(positionA, positionB) {
-        return positionA.x === positionB.x && positionA.y === positionB.y;
+class Grid {
+    draw(ctx, lengthOfBlockEdge) {
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = "gray";
+        for(let xPosition = 1; xPosition <= this.divisions; xPosition++)for(let yPosition = 1; yPosition <= this.divisions; yPosition++){
+            const startX = (xPosition - 1) * lengthOfBlockEdge;
+            const startY = (yPosition - 1) * lengthOfBlockEdge;
+            ctx.beginPath();
+            ctx.rect(startX, startY, lengthOfBlockEdge, lengthOfBlockEdge);
+            ctx.stroke();
+        }
     }
-    static{
-        this.generateRandomPosition = (max)=>{
-            return new Position(Math.floor(Math.random() * max) + 1, Math.floor(Math.random() * max) + 1);
-        };
-    }
-    constructor(x, y){
-        this.x = x;
-        this.y = y;
-    }
-    isTheSamePositionAs(position) {
-        return this.x === position.x && this.y === position.y;
+    constructor(){
+        this.divisions = 20;
     }
 }
+const grid = new Grid();
+exports.default = grid;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
@@ -717,7 +716,29 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"9Wu3g":[function(require,module,exports) {
+},{}],"ioupC":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Position", ()=>Position);
+class Position {
+    constructor(x, y){
+        this.x = x;
+        this.y = y;
+    }
+    static areTheSamePosition(positionA, positionB) {
+        return positionA.x === positionB.x && positionA.y === positionB.y;
+    }
+    static{
+        this.generateRandomPosition = (max)=>{
+            return new Position(Math.floor(Math.random() * max) + 1, Math.floor(Math.random() * max) + 1);
+        };
+    }
+    isTheSamePositionAs(position) {
+        return this.x === position.x && this.y === position.y;
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9Wu3g":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "drawBlockInXYPosition", ()=>drawBlockInXYPosition);
@@ -725,28 +746,6 @@ function drawBlockInXYPosition(ctx, x, y, colour, lengthOfBlockEdge) {
     ctx.fillStyle = colour;
     ctx.fillRect(x * lengthOfBlockEdge - lengthOfBlockEdge, y * lengthOfBlockEdge - lengthOfBlockEdge, lengthOfBlockEdge, lengthOfBlockEdge);
 }
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3m6mn":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-class Grid {
-    draw(ctx, lengthOfBlockEdge) {
-        ctx.fillStyle = "black";
-        ctx.strokeStyle = "gray";
-        for(let xPosition = 1; xPosition <= this.divisions; xPosition++)for(let yPosition = 1; yPosition <= this.divisions; yPosition++){
-            const startX = (xPosition - 1) * lengthOfBlockEdge;
-            const startY = (yPosition - 1) * lengthOfBlockEdge;
-            ctx.beginPath();
-            ctx.rect(startX, startY, lengthOfBlockEdge, lengthOfBlockEdge);
-            ctx.stroke();
-        }
-    }
-    constructor(){
-        this.divisions = 5;
-    }
-}
-const grid = new Grid();
-exports.default = grid;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hIOoe":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -766,28 +765,37 @@ class Snake {
     draw(ctx, lengthOfBlockEdge) {
         for (const position of this.positions)(0, _drawBlockInXYPosition.drawBlockInXYPosition)(ctx, position.x, position.y, "green", lengthOfBlockEdge);
     }
-    setPosition(position, divisions) {
-        if (position.x <= divisions && position.y <= divisions && position.x >= 1 && position.y >= 1) this.positions[0] = position;
-        else this.isDead = true;
-    }
     updatePosition() {
-        const gridSize = (0, _gridDefault.default).divisions;
+        const position = this.positions[0];
+        const { divisions } = (0, _gridDefault.default);
+        let newPosition = undefined;
         switch(this.direction){
             case (0, _enums.Direction).RIGHT:
-                this.setPosition(new (0, _position.Position)(this.positions[0].x + 1, this.positions[0].y), gridSize);
+                newPosition = new (0, _position.Position)(position.x + 1, position.y);
                 break;
             case (0, _enums.Direction).LEFT:
-                this.setPosition(new (0, _position.Position)(this.positions[0].x - 1, this.positions[0].y), gridSize);
+                newPosition = new (0, _position.Position)(position.x - 1, position.y);
                 break;
             case (0, _enums.Direction).UP:
-                this.setPosition(new (0, _position.Position)(this.positions[0].x, this.positions[0].y - 1), gridSize);
+                newPosition = new (0, _position.Position)(position.x, position.y - 1);
                 break;
             case (0, _enums.Direction).DOWN:
-                this.setPosition(new (0, _position.Position)(this.positions[0].x, this.positions[0].y + 1), gridSize);
+                newPosition = new (0, _position.Position)(position.x, position.y + 1);
                 break;
+            default:
+                return;
         }
+        const isOutOfBounds = newPosition.x <= divisions && newPosition.y <= divisions && newPosition.x >= 1 && newPosition.y >= 1;
+        const touchedItSelf = this.positions.includes(newPosition);
+        if (isOutOfBounds || touchedItSelf) {
+            this.positions.unshift(newPosition);
+            this.positions.pop();
+        } else this.isDead = true;
     }
-    eatFood() {}
+    eatFood() {
+        if (!this.previousLastPosition) throw Error("no previousLastPosition");
+        this.positions.push(new (0, _position.Position)(this.previousLastPosition.x, this.previousLastPosition.y));
+    }
     getBehindBlock() {
         this.positions[0];
     }
@@ -795,13 +803,14 @@ class Snake {
         return this.positions.length;
     }
     update(_isOnSamePositionAsFood) {
+        this.previousLastPosition = this.positions[this.positions.length - 1];
         this.updatePosition();
-    // this.history.push({this.positions[0]})
+        if (_isOnSamePositionAsFood) this.eatFood();
     }
 }
 exports.default = Snake;
 
-},{"./Position":"ioupC","./enums":"1BBdE","./drawBlockInXYPosition":"9Wu3g","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./Grid":"3m6mn"}],"1BBdE":[function(require,module,exports) {
+},{"./Position":"ioupC","./enums":"1BBdE","./drawBlockInXYPosition":"9Wu3g","./Grid":"3m6mn","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1BBdE":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Direction", ()=>Direction);

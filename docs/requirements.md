@@ -20,3 +20,4 @@
 - [ ] eat food should look like it adds to tail instead of head
 - [ ] snake shouldn't be able to change to the opposite direction. This should be blocked or cause death. 
 - [ ] add border to each snake block
+- [ ] let the user select a difficulty
