@@ -785,9 +785,9 @@ class Snake {
             default:
                 return;
         }
-        const isOutOfBounds = newPosition.x <= divisions && newPosition.y <= divisions && newPosition.x >= 1 && newPosition.y >= 1;
-        const touchedItSelf = this.positions.includes(newPosition);
-        if (isOutOfBounds || touchedItSelf) {
+        const isNotOutOfBounds = newPosition.x <= divisions && newPosition.y <= divisions && newPosition.x >= 1 && newPosition.y >= 1;
+        const touchedItSelf = this.positions.filter((position)=>newPosition && newPosition.isTheSamePositionAs(position)).length > 0;
+        if (isNotOutOfBounds && !touchedItSelf) {
             this.positions.unshift(newPosition);
             this.positions.pop();
         } else this.isDead = true;

@@ -5,15 +5,14 @@ import { drawBlockInXYPosition } from "./drawBlockInXYPosition";
 import grid from "./Grid";
 
 export default class Snake implements GameObject {
-    history: any;
     positions: Position[]
     isDead: boolean | undefined
     previousLastPosition: Position | undefined;
+    direction: Direction | undefined = undefined
+    
     constructor(startingPosition: Position) {
         this.positions = [startingPosition]
     }
-
-    direction: Direction | undefined = undefined
 
     draw(ctx: any, lengthOfBlockEdge: number) {
         for (const position of this.positions) {
@@ -41,9 +40,11 @@ export default class Snake implements GameObject {
             default:
                 return;
         }
-        const isOutOfBounds = newPosition.x <= divisions && newPosition.y <= divisions && newPosition.x >= 1 && newPosition.y >= 1;
-        const touchedItSelf = this.positions.includes(newPosition);
-        if (isOutOfBounds || touchedItSelf) {
+  
+        const isNotOutOfBounds = newPosition.x <= divisions && newPosition.y <= divisions && newPosition.x >= 1 && newPosition.y >= 1;
+        const touchedItSelf = this.positions.filter(position => newPosition && newPosition.isTheSamePositionAs(position)).length > 0; 
+
+        if (isNotOutOfBounds && !touchedItSelf) {
             this.positions.unshift(newPosition);
             this.positions.pop();
         } else {
@@ -53,7 +54,7 @@ export default class Snake implements GameObject {
 
     eatFood() {
         if (!this.previousLastPosition) throw Error('no previousLastPosition')
-        this.positions.push(new Position(this.previousLastPosition!.x, this.previousLastPosition!.y))
+        this.positions.push(new Position(this.previousLastPosition.x, this.previousLastPosition.y))
     }
 
     getBehindBlock() {

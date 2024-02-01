@@ -60,7 +60,14 @@ describe('Snake', () => {
         })
 
         it('should die if its head touches its body', () => {
-            //
+            // Arrange
+            const snake = new Snake(new Position(1,1));
+            snake.positions.push(new Position(1,2));
+            snake.direction = Direction.DOWN;
+            // Act
+            snake.update(false);
+            // Assert
+            expect(snake.isDead).toBe(true)
         })
 
         it('should ensure that the body of the snake follows the head in stright line', () => {
@@ -78,6 +85,8 @@ describe('Snake', () => {
             snake.update(false);
 
             // Assert
+            expect(snake.positions[0].isTheSamePositionAs(new Position(3,1))).toBe(true);
+
 
         })
 

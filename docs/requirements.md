@@ -9,7 +9,7 @@
 - [x] snake should die if touches any of the edge of the grid 
 - [x] don't start game until player presses a direction
 - [x] everytime snake eats a food block it should gain 1 in length and the body should follow the snake head
-- [ ] snake should die if it touches itself 
+- [x] snake should die if it touches itself 
 - [ ] score of snake length should be shown during play
 - [ ] when snake dies should see a game over screen 
 - [ ] should save and diplay highscore
