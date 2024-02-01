@@ -1,12 +1,15 @@
+import { Controls } from "./Controls";
 import { FoodBlock } from "./FoodBlock";
 import grid from "./Grid";
 import { Position } from "./Position";
 import Snake from "./Snake";
-import { Direction } from "./enums";
 
 function main() {
     const foodBlock = new FoodBlock();
-    const snake = new Snake(new Position(3, 3));
+    const snakes = [
+        new Snake(new Position(5, 10), new Controls({left: 'ArrowLeft', right: 'ArrowRight', up: 'ArrowUp', down: 'ArrowDown'}), 'blue'), 
+        new Snake(new Position(15, 10), new Controls({left: 'a', right: 'd', up: 'w', down: 's'}), 'orange')
+    ];
     const canvas: HTMLCanvasElement = document.querySelector("canvas") as HTMLCanvasElement;
     if(!canvas) {
         throw new Error('Canvas not found')
@@ -20,7 +23,7 @@ function main() {
     drawEverything(ctx);
 
     const interval = setInterval((): void => {
-        if (snake.isDead) {
+        if (snakes.some(snake => snake.isDead)) {
             alert('Game Over!');
             clearInterval(interval)
             return 
@@ -32,41 +35,32 @@ function main() {
 
     function drawEverything(ctx: CanvasRenderingContext2D) {
         drawBackground(ctx);
-        for (const x of [foodBlock, snake]) { // add grid if want to see it
+        for (const x of [foodBlock, ...snakes]) { // add grid if want to see it
             x.draw(ctx, lengthOfBlockEdge);
         }
     }
     
     function drawBackground(ctx: CanvasRenderingContext2D) {
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "darkgreen";
         ctx.fillRect(0, 0, canvas.width, canvas.width);
     }
     
     function updateGame() {
-        const areOnTheSamePosition = Position.areTheSamePosition(snake.positions[0], foodBlock.position)
-        snake.update(areOnTheSamePosition)
-        if (areOnTheSamePosition) {
-            foodBlock.update();
+        for (const snake of snakes) {
+            const areOnTheSamePosition = Position.areTheSamePosition(snake.positions[0], foodBlock.position)
+            snake.update(areOnTheSamePosition)
+            if (areOnTheSamePosition) {
+                foodBlock.update();
+            }
         }
     }
 
     function onKeyDown(event: { key: any; }) {
-        const newDirection = mapKeyToDirection(event.key)
-        if (newDirection) {
-            snake.direction = newDirection;
-        }
-    }
-    
-    function mapKeyToDirection(key: any): Direction | undefined {
-        switch (key) {
-            case 'ArrowLeft':
-                return Direction.LEFT
-            case 'ArrowRight':
-                return Direction.RIGHT
-            case 'ArrowUp':
-                return Direction.UP
-            case 'ArrowDown':
-                return Direction.DOWN
+        for (const snake of snakes) {
+            const newDirection = snake.mapKeyToDirection(event.key)
+            if (newDirection) {
+                snake.direction = newDirection;
+            }
         }
     }
 }

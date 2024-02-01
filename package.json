@@ -1,9 +1,8 @@
 {
   "scripts": {
     "dev": "npx parcel index.html",
-    "test:jest": "npx jest --verbose",
+    "test": "npx jest --verbose",
     "test:cypress": "npx parcel index.html --port 1235 & npx cypress run && kill $(lsof -t -i:1235)",
-    "test": "npm run test:jest && npm run test:cypress",
     "test:cypress:open": "npx parcel index.html --port 1235 & npx cypress open && kill $(lsof -t -i:1235)"
   },
   "devDependencies": {

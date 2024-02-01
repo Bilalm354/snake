@@ -3,20 +3,25 @@ import { Direction } from "./enums";
 import { GameObject } from "./interfaces";
 import { drawBlockInXYPosition } from "./drawBlockInXYPosition";
 import grid from "./Grid";
+import { Controls } from "./Controls";
 
 export default class Snake implements GameObject {
     positions: Position[]
     isDead: boolean | undefined
     previousLastPosition: Position | undefined;
     direction: Direction | undefined = undefined
+    controls: Controls | undefined
+    colour: string;
     
-    constructor(startingPosition: Position) {
+    constructor(startingPosition: Position, controls: Controls = new Controls({left: 'ArrowLeft', right: 'ArrowRight', up: 'ArrowUp', down: 'ArrowDown'}), colour: string = 'darkgrey') {
         this.positions = [startingPosition]
+        this.controls = new Controls({left: controls.left, right: controls.right, up: controls.up, down: controls.down});
+        this.colour = colour;
     }
 
     draw(ctx: any, lengthOfBlockEdge: number) {
         for (const position of this.positions) {
-            drawBlockInXYPosition(ctx, position.x, position.y, 'green', lengthOfBlockEdge)
+            drawBlockInXYPosition(ctx, position.x, position.y, this.colour, lengthOfBlockEdge)
         }
     }
 
@@ -71,6 +76,10 @@ export default class Snake implements GameObject {
         if(_isOnSamePositionAsFood) {
             this.eatFood()
         }
+    }
+
+    mapKeyToDirection(key: any): Direction | undefined {
+        return this.controls?.mapKeyToDirection(key)
     }
 }
 

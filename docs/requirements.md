@@ -12,9 +12,18 @@
 - [x] snake should die if it touches itself 
 - [x] snake shouldn't be able to change to the opposite direction. This should be blocked or cause death. 
 - [x] add border to each snake block
-- [ ] add second player controlled by wasd 
+- [x] add second player
+     - [x] controlled by wasd
+     - [x] should be a different colour
+     - [ ] should not start game until both players have picked a direction
+- [ ] menu screen
+- [ ] should let players start anothe game without refreshing page
+- [ ] should show a game over screen
+- [ ] let user choose their controls
+- [ ] add up to 4 players
 - [ ] add second player controller by computer
 - [ ] score of snake length should be shown during play
+    - [ ] for each player in their colour
 - [ ] when snake dies should see a game over screen 
 - [ ] should save and diplay highscore
 - [ ] food should spawn at the same time as it is eaten

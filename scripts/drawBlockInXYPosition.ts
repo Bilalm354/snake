@@ -3,7 +3,7 @@ export function drawBlockInXYPosition(ctx: any, x: number, y: number, colour: st
     const yPixelsStart = y * lengthOfBlockEdge - lengthOfBlockEdge;
     ctx.fillStyle = colour;
     ctx.fillRect(xPixelsStart, yPixelsStart, lengthOfBlockEdge, lengthOfBlockEdge);
-    ctx.strokeStyle = "white";
+    ctx.strokeStyle = "black";
     ctx.beginPath();
     ctx.rect(xPixelsStart, yPixelsStart, lengthOfBlockEdge, lengthOfBlockEdge);
     ctx.stroke();
