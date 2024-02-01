@@ -10,14 +10,16 @@
 - [x] don't start game until player presses a direction
 - [x] everytime snake eats a food block it should gain 1 in length and the body should follow the snake head
 - [x] snake should die if it touches itself 
+- [x] snake shouldn't be able to change to the opposite direction. This should be blocked or cause death. 
+- [x] add border to each snake block
+- [ ] add second player controlled by wasd 
+- [ ] add second player controller by computer
 - [ ] score of snake length should be shown during play
 - [ ] when snake dies should see a game over screen 
 - [ ] should save and diplay highscore
-- [ ] add second player controlled by wasd 
-- [ ] add second player controller by computer
 - [ ] food should spawn at the same time as it is eaten
 - [ ] food should not spawn on snake
 - [ ] eat food should look like it adds to tail instead of head
-- [ ] snake shouldn't be able to change to the opposite direction. This should be blocked or cause death. 
-- [ ] add border to each snake block
 - [ ] let the user select a difficulty
+    - [ ] low difficulty should block turning opposite direcion insttead of dying 
+    - [ ] 

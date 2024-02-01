@@ -743,8 +743,14 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "drawBlockInXYPosition", ()=>drawBlockInXYPosition);
 function drawBlockInXYPosition(ctx, x, y, colour, lengthOfBlockEdge) {
+    const xPixelsStart = x * lengthOfBlockEdge - lengthOfBlockEdge;
+    const yPixelsStart = y * lengthOfBlockEdge - lengthOfBlockEdge;
     ctx.fillStyle = colour;
-    ctx.fillRect(x * lengthOfBlockEdge - lengthOfBlockEdge, y * lengthOfBlockEdge - lengthOfBlockEdge, lengthOfBlockEdge, lengthOfBlockEdge);
+    ctx.fillRect(xPixelsStart, yPixelsStart, lengthOfBlockEdge, lengthOfBlockEdge);
+    ctx.strokeStyle = "white";
+    ctx.beginPath();
+    ctx.rect(xPixelsStart, yPixelsStart, lengthOfBlockEdge, lengthOfBlockEdge);
+    ctx.stroke();
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hIOoe":[function(require,module,exports) {
