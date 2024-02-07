@@ -15,9 +15,8 @@
 - [x] add second player
      - [x] controlled by wasd
      - [x] should be a different colour
-     - [ ] should not start game until both players have picked a direction
+- [x] should let players start another game without refreshing page
 - [ ] menu screen
-- [ ] should let players start anothe game without refreshing page
 - [ ] should show a game over screen
 - [ ] let user choose their controls
 - [ ] add up to 4 players
@@ -31,4 +30,4 @@
 - [ ] eat food should look like it adds to tail instead of head
 - [ ] let the user select a difficulty
     - [ ] low difficulty should block turning opposite direcion insttead of dying 
-    - [ ] 
+- [ ] should not start game until both players have picked a direction

@@ -4,17 +4,30 @@ import grid from "./Grid";
 import { Position } from "./Position";
 import Snake from "./Snake";
 
-export function main(canvas: HTMLCanvasElement) {
-    const foodBlock = new FoodBlock();
-    const snakes = [
+function buildStartingSnakes() {
+    return [
         new Snake(new Position(5, 10), new Controls({left: 'ArrowLeft', right: 'ArrowRight', up: 'ArrowUp', down: 'ArrowDown'}), 'blue'), 
         new Snake(new Position(15, 10), new Controls({left: 'a', right: 'd', up: 'w', down: 's'}), 'orange')
     ];
+}
+
+export function main(canvas: HTMLCanvasElement) {
+    // Game state
+    const foodBlock = new FoodBlock();
+    const snakes = buildStartingSnakes();
+    let isGameOver = false;
+
     if(!canvas) {
         throw new Error('Canvas not found')
     }
     const lengthOfBlockEdge = canvas!.width / grid.divisions;
     document.addEventListener('keydown', onKeyDown)
+    
+    window.addEventListener('newGame', () => {
+        snakes.forEach(snake => snake.reset())
+        foodBlock.reset()
+    })
+
     const ctx = canvas!.getContext("2d");
     if (!ctx) {
         return
@@ -22,11 +35,16 @@ export function main(canvas: HTMLCanvasElement) {
     drawEverything(ctx);
 
     const interval = setInterval((): void => {
-        if (snakes.some(snake => snake.isDead)) {
+        const isASnakeDead = snakes.some(snake => snake.isDead)
+        const didAGameJustEnd = !isGameOver && isASnakeDead
+        if (didAGameJustEnd) {
+            window.dispatchEvent(new Event('gameOver'))
             alert('Game Over!');
-            clearInterval(interval)
-            return 
-        } else {
+        } 
+
+        isGameOver = isASnakeDead
+
+        if (!isGameOver) {
             updateGame()
         }
         drawEverything(ctx);

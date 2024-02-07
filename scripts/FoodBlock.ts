@@ -12,6 +12,10 @@ export class FoodBlock implements GameObject {
         drawBlockInXYPosition(ctx, this.position.x, this.position.y, 'red', lengthOfBlockEdge)
     }
 
+    reset(): void {
+        this.position = this.getNewPosition();
+    }
+
     getNewPosition = () => {
         return Position.generateRandomPosition(grid.divisions);
     };

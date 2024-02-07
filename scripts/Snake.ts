@@ -7,16 +7,25 @@ import { Controls } from "./Controls";
 
 export default class Snake implements GameObject {
     positions: Position[]
-    isDead: boolean | undefined
+    isDead: boolean;
     previousLastPosition: Position | undefined;
     direction: Direction | undefined = undefined
     controls: Controls | undefined
     colour: string;
+    startingPosition: Position;
     
     constructor(startingPosition: Position, controls: Controls = new Controls({left: 'ArrowLeft', right: 'ArrowRight', up: 'ArrowUp', down: 'ArrowDown'}), colour: string = 'darkgrey') {
+        this.startingPosition = startingPosition;
         this.positions = [startingPosition]
         this.controls = new Controls({left: controls.left, right: controls.right, up: controls.up, down: controls.down});
         this.colour = colour;
+        this.isDead= false
+    }
+
+    reset(): void {
+        this.positions = [this.startingPosition];
+        this.direction = undefined;
+        this.isDead = false;
     }
 
     draw(ctx: any, lengthOfBlockEdge: number) {
