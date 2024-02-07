@@ -1,10 +1,6 @@
 import { Position } from "./Position"
 
 describe('Position', () => {
-    describe('generateRandomPosition', () => {
-        it.todo('should return a valid position');
-    })
-
     describe('isTheSamePositionAs', () => {
         it('should return false if they are not on the same position', () => {
             // Arrange

@@ -4,13 +4,12 @@ import grid from "./Grid";
 import { Position } from "./Position";
 import Snake from "./Snake";
 
-function main() {
+export function main(canvas: HTMLCanvasElement) {
     const foodBlock = new FoodBlock();
     const snakes = [
         new Snake(new Position(5, 10), new Controls({left: 'ArrowLeft', right: 'ArrowRight', up: 'ArrowUp', down: 'ArrowDown'}), 'blue'), 
         new Snake(new Position(15, 10), new Controls({left: 'a', right: 'd', up: 'w', down: 's'}), 'orange')
     ];
-    const canvas: HTMLCanvasElement = document.querySelector("canvas") as HTMLCanvasElement;
     if(!canvas) {
         throw new Error('Canvas not found')
     }
@@ -64,5 +63,3 @@ function main() {
         }
     }
 }
-
-main();
